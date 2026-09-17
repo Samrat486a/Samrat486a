@@ -319,3 +319,22 @@ Arduino-based system that automatically segregates **wet and dry waste** using s
 </div>
 
 <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:7C3AED,30:0EA5E9,65:1E3A8A,100:010409&height=120&section=footer&text=Let's%20build%20something%20great.&fontSize=18&fontColor=ffffff&fontAlignY=68&animation=twinkling" />
+
+name: Generate Snake
+on:
+  schedule: [{cron: "0 */12 * * *"}]
+  workflow_dispatch:
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Platane/snk@v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: dist/github-contribution-grid-snake-dark.svg?palette=github-dark
+      - uses: crazy-max/ghaction-github-pages@v3
+        with:
+          target_branch: output
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
